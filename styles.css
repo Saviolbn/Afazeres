@@ -6,6 +6,7 @@ body{
     width:60%;
     background-color: pink;
     border: 2px solid pink;
+    border-radius: 10px;
     padding: 10px;
     text-align: center;
 }
@@ -23,4 +24,7 @@ input#novaTarefa{
     background-color: aliceblue;
     border-color: pink;
     
+}
+*:focus{
+    outline: none;
 }
