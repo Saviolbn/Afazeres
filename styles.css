@@ -4,7 +4,14 @@ body{
 .container{
     margin:auto;
     width:60%;
+    background-color: pink;
     border: 2px solid pink;
     padding: 10px;
     text-align: center;
+}
+table,th,td,tr{
+    border: 1px solid beige;
+    margin: auto;
+    text-align: justify;
+    width: 100%;
 }
