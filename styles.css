@@ -1,3 +1,10 @@
 body{
-    color: papayawhip;
+    background-color: papayawhip;
+}
+.container{
+    margin:auto;
+    width:60%;
+    border: 2px solid pink;
+    padding: 10px;
+    text-align: center;
 }
