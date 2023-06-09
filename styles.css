@@ -1,0 +1,43 @@
+html, body {
+    min-height: 100%;
+}
+
+body{
+    /*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=ecffba&c2=e6a23f&gt=l&gd=dtl
+*/
+background: #ECFFBA;
+background: linear-gradient(135deg, #ECFFBA, #E6A23F);
+}
+.container{
+    margin:auto;
+    width:60%;
+    background-color: pink;
+    border: 2px solid pink;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+input#novaTarefa{
+    width: 100%;
+    border: 0;
+    box-sizing: border-box;
+    background-color: aliceblue;
+    border-color: pink;
+    
+}
+*:focus{
+    outline: none;
+}
+li,ul{
+    list-style-type:none;
+    padding: 0;
+    margin: 0;
+}
+li:nth-child(odd){
+    background-color: lightgray;
+}
+li:nth-child(even){
+    background-color: gray;
+}
