@@ -28,3 +28,6 @@ input#novaTarefa{
 *:focus{
     outline: none;
 }
+li{
+    list-style-type:none;
+}
