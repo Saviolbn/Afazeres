@@ -31,7 +31,15 @@ input#novaTarefa{
 *:focus{
     outline: none;
 }
-li,ul{
+li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style-type:none;
+    padding: 0;
+    margin: 0;
+}
+ul{
     list-style-type:none;
     padding: 0;
     margin: 0;
@@ -41,4 +49,7 @@ li:nth-child(odd){
 }
 li:nth-child(even){
     background-color: gray;
+}
+.material-icons{
+    vertical-align: middle;
 }
