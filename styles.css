@@ -52,4 +52,5 @@ li:nth-child(even){
 }
 .material-icons{
     vertical-align: middle;
+    cursor: pointer;
 }
