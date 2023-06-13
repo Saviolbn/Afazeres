@@ -54,3 +54,6 @@ li:nth-child(even){
     vertical-align: middle;
     cursor: pointer;
 }
+.sublinhado{
+    text-decoration:line-through
+}
