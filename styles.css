@@ -54,3 +54,11 @@ li:nth-child(even){
     vertical-align: middle;
     cursor: pointer;
 }
+.sublinhado{
+    text-decoration:line-through
+}
+.gifo{
+    width:400px;
+    height:auto;
+    visibility: hidden;
+}
