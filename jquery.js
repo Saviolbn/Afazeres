@@ -4,6 +4,16 @@ $(document).ready(function () {
     });
 
     $(".delete").on("click",function(){
-        $(this).parent(this).remove()
+        $(this).parent().remove()
     });
+
+    $(".up").on("click",function(){
+        var $esse = ($(this).parent().parent());
+        $esse.prev().before($esse);
+    });
+    $(".down").on("click",function(){
+        var $esse = ($(this).parent().parent());
+        $esse.next().after($esse);
+    });
+    
 });
