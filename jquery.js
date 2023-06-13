@@ -4,6 +4,6 @@ $(document).ready(function () {
     });
 
     $(".delete").on("click",function(){
-        $(this).parent(this).hide()
+        $(this).parent(this).remove()
     });
 });
