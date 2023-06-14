@@ -8,12 +8,12 @@ $(document).ready(function () {
     });
 
     $(".up").on("click",function(){
-        var $esse = ($(this).parent().parent());
-        $esse.prev().before($esse);
+        const $elelista = ($(this).parent().parent());
+        $elelista.prev().before($elelista);
     });
     $(".down").on("click",function(){
-        var $esse = ($(this).parent().parent());
-        $esse.next().after($esse);
+        const $elelista = ($(this).parent().parent());
+        $elelista.next().after($elelista);
     });
     
 });
