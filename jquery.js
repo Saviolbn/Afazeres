@@ -1,11 +1,11 @@
-function criarTarefa(){
+function criarTarefa(tarefa){
         var linha = document.createElement("li");
         var lixeira = document.createElement("span");
             lixeira.className = "material-icons delete"
             lixeira.innerHTML = "delete";
         var campo = document.createElement("span");
-            campo.className = "texto"
-            campo.innerHTML = "teste";
+            campo.className = "texto";
+            campo.innerHTML = tarefa;
         var lapis = document.createElement("span");
             lapis.className = "material-icons edit"
             lapis.innerHTML = "edit"
@@ -39,9 +39,9 @@ $(function () {
         $eleLista.next().after($eleLista);
         event.stopPropagation();
     });
-    
-    $("button").on("click",function(event){
-        criarTarefa();
+    $("form").on("submit",function(event){
+        var tarefa = $("#novaTarefa").val();
+        criarTarefa(tarefa);
         event.stopPropagation();
-    });
+    })
 });
