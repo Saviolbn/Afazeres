@@ -50,7 +50,7 @@ $(function () {
             criarTarefa(tarefa);
             event.stopPropagation();
         } else {
-            $("input").toggle();
+            $("input").fadeToggle(1000);
         }
     })
 });
