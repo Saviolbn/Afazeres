@@ -49,11 +49,8 @@ $(function () {
             var tarefa = $("#novaTarefa").val();
             criarTarefa(tarefa);
             event.stopPropagation();
-        } else if($("input").length) {
-            $("input").hide();
         } else {
-            
-
+            $("input").toggle();
         }
     })
 });
