@@ -21,8 +21,8 @@ function criarTarefa(tarefa){
         $("ul").append(linha);
     }
 $(function () {
-    $("ul").on("click",".texto",function(){
-        $(this).toggleClass("sublinhado");
+    $("ul").on("click","li",function(event){
+        $(this).find(".texto").toggleClass("sublinhado");
         event.stopPropagation();
     });
     $("ul").on("click",".delete",function(event){
