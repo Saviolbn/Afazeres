@@ -1,19 +1,47 @@
-$(document).ready(function () {
-    $(".texto").on("click",function(){
-        $(this).toggleClass("sublinhado")
+function criarTarefa(tarefa){
+        var linha = document.createElement("li");
+        var lixeira = document.createElement("span");
+            lixeira.className = "material-icons delete"
+            lixeira.innerHTML = "delete";
+        var campo = document.createElement("span");
+            campo.className = "texto";
+            campo.innerHTML = tarefa;
+        var lapis = document.createElement("span");
+            lapis.className = "material-icons edit"
+            lapis.innerHTML = "edit"
+        var baixo = document.createElement("span");
+            baixo.className = "material-icons down"
+            baixo.innerHTML = "expand_more"
+        var cima = document.createElement("span");
+            cima.className = "material-icons up"
+            cima.innerHTML = "expand_less"
+        var direita = document.createElement("div");
+        $(direita).append(lapis,baixo,cima);
+        $(linha).append(lixeira,campo,direita);
+        $("ul").append(linha);
+    }
+$(function () {
+    $("ul").on("click","li",function(event){
+        $(this).find(".texto").toggleClass("sublinhado");
+        event.stopPropagation();
     });
-
-    $(".delete").on("click",function(){
-        $(this).parent().remove()
+    $("ul").on("click",".delete",function(event){
+        $(this).parent().remove();
+        event.stopPropagation();
     });
-
-    $(".up").on("click",function(){
-        const $elelista = ($(this).parent().parent());
-        $elelista.prev().before($elelista);
+    $("ul").on("click",".up",function(event){
+        const $eleLista = ($(this).parent().parent());
+        $eleLista.prev().before($eleLista);
+        event.stopPropagation();
     });
-    $(".down").on("click",function(){
-        const $elelista = ($(this).parent().parent());
-        $elelista.next().after($elelista);
+    $("ul").on("click",".down",function(event){
+        const $eleLista = ($(this).parent().parent());
+        $eleLista.next().after($eleLista);
+        event.stopPropagation();
     });
-    
+    $("form").on("submit",function(event){
+        var tarefa = $("#novaTarefa").val();
+        criarTarefa(tarefa);
+        event.stopPropagation();
+    })
 });
