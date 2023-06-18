@@ -1,11 +1,12 @@
 function criarTarefa(tarefa){
+        if (!tarefa.val()){return}
         var linha = document.createElement("li");
         var lixeira = document.createElement("span");
             lixeira.className = "material-icons delete"
             lixeira.innerHTML = "delete";
         var campo = document.createElement("span");
             campo.className = "texto";
-            campo.innerHTML = tarefa;
+            campo.innerHTML = tarefa.val();
         var lapis = document.createElement("span");
             lapis.className = "material-icons edit"
             lapis.innerHTML = "edit"
@@ -15,10 +16,9 @@ function criarTarefa(tarefa){
         var cima = document.createElement("span");
             cima.className = "material-icons up"
             cima.innerHTML = "expand_less"
-        var direita = document.createElement("div");
-        $(direita).append(lapis,baixo,cima);
-        $(linha).append(lixeira,campo,direita);
+        $(linha).append(lixeira,campo,lapis,baixo,cima);
         $("ul").append(linha);
+        tarefa.val("");
     }
 $(function () {
     $("ul").on("click","li",function(event){
@@ -26,21 +26,23 @@ $(function () {
         event.stopPropagation();
     });
     $("ul").on("click",".delete",function(event){
-        $(this).parent().remove();
+        $(this).parent().fadeOut(function(){   
+            $(this).remove();
+        });
         event.stopPropagation();
     });
     $("ul").on("click",".up",function(event){
-        const $eleLista = ($(this).parent().parent());
+        const $eleLista = ($(this).parent());
         $eleLista.prev().before($eleLista);
         event.stopPropagation();
     });
     $("ul").on("click",".down",function(event){
-        const $eleLista = ($(this).parent().parent());
+        const $eleLista = ($(this).parent());
         $eleLista.next().after($eleLista);
         event.stopPropagation();
     });
     $("form").on("submit",function(event){
-        var tarefa = $("#novaTarefa").val();
+        var tarefa = $("#novaTarefa");
         criarTarefa(tarefa);
         event.stopPropagation();
     });
