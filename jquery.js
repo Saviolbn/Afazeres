@@ -66,6 +66,14 @@ $(function () {
     });
 
     //editar tarefa
+    $(".lista").on("focusout",".campEditar",function(event) {
+        let formularioEditar = $(".formEditar");
+        const novoTexto = document.createElement("span");
+        novoTexto.className = "texto"
+        novoTexto.innerText = formularioEditar.find(".campEditar").val();
+        formularioEditar.replaceWith(novoTexto);
+    });
+
     $(".lista").on("click", ".edit", function (event) {
         let formularioEditar = $(".formEditar");
         if (formularioEditar.length) {
@@ -86,9 +94,11 @@ $(function () {
             });
             formularioEditar.append(campoEditar);
             textoEditar.replaceWith(formularioEditar);
+            campoEditar.focus();
         }
         event.stopPropagation();
     });
+
 
     //Lida com a funcionalidade do botão "+"
     $(".listaTitulo").on("click", ".add", function (event) {
