@@ -51,7 +51,7 @@ $(function () {
         event.stopPropagation();
     });
 
-    //Mover o elemento da lista para baxio
+    //Mover o elemento da lista para baixo
     $(".lista").on("click", ".down", function (event) {
         const eleLista = $(this).parent();
         eleLista.next().after($eleLista);
@@ -62,6 +62,31 @@ $(function () {
     $(".listaFormulario").on("submit", function (event) {
         const tarefa = $("#novaTarefa");
         criarTarefa(tarefa);
+        event.stopPropagation();
+    });
+
+    //editar tarefa
+    $(".lista").on("click", ".edit", function (event) {
+        let formularioEditar = $(".formEditar");
+        if (formularioEditar.length) {
+            const novoTexto = document.createElement("span");
+            novoTexto.className = "texto"
+            novoTexto.innerText = formularioEditar.find(".campEditar").val();
+            formularioEditar.replaceWith(novoTexto);
+        } else {
+            const textoEditar = $(this).parent().find(".texto");
+            const campoEditar = $("<input>", { 
+                val: $(textoEditar).text(),
+                type: "text",
+                class: "campEditar" 
+            });
+            const formularioEditar = $("<form></form>",{
+                onsubmit: "return false",
+                class: "formEditar"
+            });
+            formularioEditar.append(campoEditar);
+            textoEditar.replaceWith(formularioEditar);
+        }
         event.stopPropagation();
     });
 

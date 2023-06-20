@@ -42,6 +42,18 @@ body {
     background-color: lightgray;
 }
 
+.formEditar {
+    width: 100%;
+}
+
+.campEditar {
+    width: 100%;
+    border: 0;
+    background: none;
+    font-size: inherit;
+    
+}
+
 .listaInput {
     width: 100%;
     border: 0;
