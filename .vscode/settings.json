@@ -1,7 +1,12 @@
 {
     "cSpell.words": [
+        "concluida",
         "elelista",
         "gifo",
         "postid"
+    ],
+    "cSpell.ignoreWords": [
+        "Formulario",
+        "concluida"
     ]
 }
