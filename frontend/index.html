@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+        </script>
+    <script src="jquery.js"></script>
+    <title>Lista de Afazeres</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="listaTitulo">
+            <span>Tarefas</span> 
+            <span class="material-icons add">add</span>
+        </h1>
+        <form class="listaFormulario" onsubmit="return false">
+            <input class="listaInput" type="text" id="novaTarefa" placeholder="Nova Tarefa..." />
+        </form>
+        <ul class="lista"></ul>
+    </div>
+</body>
+
+</html>
