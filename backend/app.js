@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { PrismaClient } = require("@prisma/client");
+const cors = require("cors");
 
 const prisma = new PrismaClient()
 const app = express();
 app.use(bodyParser.json())
+app.use(cors())
 const port = 3000;
 
 app.post("/criar", async (req, res) => {
@@ -32,7 +34,7 @@ app.get("/listarUnico/:id", async(req, res) => {
     })
     res.send(dados)
 })
-//chtao
+
 app.patch("/editar/:id", async(req, res) => {
     const dados = await prisma.tarefas.update({
         data: {
@@ -56,5 +58,4 @@ app.delete("/deletar/:id", async(req, res) =>{
 })
 
 app.listen(port, () => {
-    console.log(`te amo ${port}`)
 })

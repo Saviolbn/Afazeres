@@ -1,6 +1,4 @@
-function criarTarefa(tarefa) {
-    if (!tarefa.val()) { return }
-
+function gerarLi(texto,sublinhado){
     const linha = document.createElement("li");
     linha.className = "listItem"
 
@@ -10,7 +8,10 @@ function criarTarefa(tarefa) {
 
     const campo = document.createElement("span");
     campo.className = "texto";
-    campo.innerText = tarefa.val();
+    campo.innerText = texto;
+    if(sublinhado){
+        campo.className += " sublinhado" 
+    }
 
     const lapis = document.createElement("span");
     lapis.className = "material-icons edit"
@@ -26,7 +27,16 @@ function criarTarefa(tarefa) {
 
     $(linha).append(lixeira, campo, lapis, baixo, cima);
     $(".lista").append(linha);
+}
+
+function criarTarefa(tarefa) {
+    if (!tarefa.val()) { return }
+    gerarLi(tarefa.val())
     tarefa.val("");
+}
+
+function gerarTarefa(tarefa,sublinhado){
+    gerarLi(tarefa,sublinhado)
 }
 
 $(function () {
@@ -99,7 +109,6 @@ $(function () {
         event.stopPropagation();
     });
 
-
     //Lida com a funcionalidade do botão "+"
     $(".listaTitulo").on("click", ".add", function (event) {
         const novoInput = $(".listaInput");
@@ -109,5 +118,18 @@ $(function () {
         } else {
             $(".listaFormulario").fadeToggle(1000);
         }
-    })
+    });
+
+        $.ajax({
+            url:"http://localhost:3000/listar",
+            type: "GET",
+            dataType:"JSON",
+            data:JSON.stringify({})
+        }).done(function(res){
+            res.forEach((tarefa) =>{
+                gerarTarefa(tarefa.texto,tarefa.finalizado)
+            })
+            console.log(res);
+        });
+    
 });
