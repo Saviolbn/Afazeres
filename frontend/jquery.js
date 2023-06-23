@@ -31,7 +31,7 @@ function gerarLi(texto,sublinhado){
 
 function criarTarefa(tarefa) {
     if (!tarefa.val()) { return }
-    gerarLi(tarefa)
+    gerarLi(tarefa.val())
     tarefa.val("");
 }
 
