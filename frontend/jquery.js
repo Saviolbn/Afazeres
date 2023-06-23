@@ -71,7 +71,18 @@ $(function () {
     //Adicionar tarefa a lista
     $(".listaFormulario").on("submit", function (event) {
         const tarefa = $("#novaTarefa");
-        criarTarefa(tarefa);
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/criar",
+            contentType: "application/json",
+            dataType:"JSON",
+            data:JSON.stringify({
+                "texto": tarefa.val(),
+                "finalizado": false
+            })
+        }).done(() => {
+            criarTarefa(tarefa);
+        })
         event.stopPropagation();
     });
 
