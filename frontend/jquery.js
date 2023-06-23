@@ -67,6 +67,12 @@ $(function () {
 
     //Apagar tarefa
     $(".lista").on("click", ".delete", function (event) {
+        const idTarefa = $(this).parent().data("id");
+        $.ajax({
+            type:"DELETE",
+            url: `http://localhost:3000/deletar/${idTarefa}`,
+            dataType: "JSON"
+        })
         $(this).parent().fadeOut(function () {
             $(this).remove();
         });
@@ -76,14 +82,14 @@ $(function () {
     //Mover o elemento da lista para cima
     $(".lista").on("click", ".up", function (event) {
         const eleLista = $(this).parent();
-        eleLista.prev().before($eleLista);
+        eleLista.prev().before(eleLista);
         event.stopPropagation();
     });
 
     //Mover o elemento da lista para baixo
     $(".lista").on("click", ".down", function (event) {
         const eleLista = $(this).parent();
-        eleLista.next().after($eleLista);
+        eleLista.next().after(eleLista);
         event.stopPropagation();
     });
 
