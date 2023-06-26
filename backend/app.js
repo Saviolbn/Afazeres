@@ -24,7 +24,7 @@ app.get("/listar", async(req, res) => {
 
     })
     res.send(dados)
-})
+}) 
 
 app.get("/listarUnico/:id", async(req, res) => {
     const dados = await prisma.tarefas.findUnique({
@@ -35,7 +35,7 @@ app.get("/listarUnico/:id", async(req, res) => {
     res.send(dados)
 })
 
-app.patch("/editar/:id", async(req, res) => {
+app.put("/editar/:id", async(req, res) => {
     const dados = await prisma.tarefas.update({
         data: {
             texto: req.body.texto,
