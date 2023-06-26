@@ -65,13 +65,18 @@ app.post("/cadastrar", async(req,res) => {
                 senha: req.body.senha
             }
         })
+        res.status(200)
         res.send(cadastro)
     } catch (error) {
+        console.log(error)
         if (error.code === "P2002") {
             console.log("erro 409, usuario ja cadastrado")
             res.status(409)
-            res.send("usuario ja cadastrado")
+            res.send("Usuario ja cadastrado")
+            return
         }
+        res.status(500)
+        res.send("Erro inesperado")
     }
 
 })
