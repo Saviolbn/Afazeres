@@ -103,10 +103,22 @@ $(function () {
     //editar tarefa
     $(".lista").on("focusout",".campEditar",function(event) {
         let formularioEditar = $(".formEditar");
+        const idTarefa = $(this).parent().parent().data("id");
         const novoTexto = document.createElement("span");
         novoTexto.className = "texto"
         novoTexto.innerText = formularioEditar.find(".campEditar").val();
+        textoEditado = formularioEditar.find(".campEditar").val();
         formularioEditar.replaceWith(novoTexto);
+        $.ajax({
+            type:"PUT",
+            url: `http://localhost:3000/editar/${idTarefa}`,
+            dataType: "JSON",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "texto": textoEditado,
+            }),
+        })
+        event.stopPropagation();
     });
 
     $(".lista").on("click", ".edit", function (event) {
@@ -127,6 +139,8 @@ $(function () {
                 onsubmit: "return false",
                 class: "formEditar"
             });
+            
+            
             formularioEditar.append(campoEditar);
             textoEditar.replaceWith(formularioEditar);
             campoEditar.focus();
