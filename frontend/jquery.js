@@ -105,10 +105,14 @@ $(function () {
         let formularioEditar = $(".formEditar");
         const idTarefa = $(this).parent().parent().data("id");
         const novoTexto = document.createElement("span");
+        const editarValor = formularioEditar.find(".campEditar").val();
+
         novoTexto.className = "texto"
-        novoTexto.innerText = formularioEditar.find(".campEditar").val();
-        textoEditado = formularioEditar.find(".campEditar").val();
+        novoTexto.innerText = editarValor;
+        textoEditado = editarValor;
+        
         formularioEditar.replaceWith(novoTexto);
+
         $.ajax({
             type:"PUT",
             url: `http://localhost:3000/editar/${idTarefa}`,
@@ -118,6 +122,7 @@ $(function () {
                 "texto": textoEditado,
             }),
         })
+
         event.stopPropagation();
     });
 
