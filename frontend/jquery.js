@@ -1,6 +1,8 @@
-function gerarLi(texto,sublinhado){
+function gerarLi(texto, sublinhado, id){
+
     const linha = document.createElement("li");
     linha.className = "listItem"
+    linha.dataset.id = id;
 
     const lixeira = document.createElement("span");
     lixeira.className = "material-icons delete"
@@ -31,12 +33,29 @@ function gerarLi(texto,sublinhado){
 
 function criarTarefa(tarefa) {
     if (!tarefa.val()) { return }
-    gerarLi(tarefa.val())
-    tarefa.val("");
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:3000/criar",
+        contentType: "application/json",
+        dataType: "JSON",
+        data: JSON.stringify({
+            "texto": tarefa.val(),
+            "finalizado": false
+        }),
+        success: (retorno)=>{
+            gerarLi(
+                retorno.texto,
+                retorno.finalizado,
+                retorno.id
+            ).done(()=>{
+                tarefa.val("");
+            })
+        }
+    })
 }
 
-function gerarTarefa(tarefa,sublinhado){
-    gerarLi(tarefa,sublinhado)
+function gerarTarefa(tarefa, sublinhado, id) {
+    gerarLi(tarefa, sublinhado, id)
 }
 
 $(function () {
@@ -48,41 +67,36 @@ $(function () {
 
     //Apagar tarefa
     $(".lista").on("click", ".delete", function (event) {
-        $(this).parent().fadeOut(function () {
+        const idTarefa = $(this).parent().data("id");
+        $.ajax({
+            type:"DELETE",
+            url: `http://localhost:3000/deletar/${idTarefa}`,
+            dataType: "JSON"
+        }).done($(this).parent().fadeOut(function () {
             $(this).remove();
-        });
+            event.stopPropagation();
+        }))
         event.stopPropagation();
     });
 
     //Mover o elemento da lista para cima
     $(".lista").on("click", ".up", function (event) {
         const eleLista = $(this).parent();
-        eleLista.prev().before($eleLista);
+        eleLista.prev().before(eleLista);
         event.stopPropagation();
     });
 
     //Mover o elemento da lista para baixo
     $(".lista").on("click", ".down", function (event) {
         const eleLista = $(this).parent();
-        eleLista.next().after($eleLista);
+        eleLista.next().after(eleLista);
         event.stopPropagation();
     });
 
     //Adicionar tarefa a lista
     $(".listaFormulario").on("submit", function (event) {
         const tarefa = $("#novaTarefa");
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:3000/criar",
-            contentType: "application/json",
-            dataType:"JSON",
-            data:JSON.stringify({
-                "texto": tarefa.val(),
-                "finalizado": false
-            })
-        }).done(() => {
-            criarTarefa(tarefa);
-        })
+        criarTarefa(tarefa);
         event.stopPropagation();
     });
 
@@ -136,9 +150,13 @@ $(function () {
             type: "GET",
             dataType:"JSON",
             data:JSON.stringify({})
-        }).done(function(res){
-            res.forEach((tarefa) =>{
-                gerarTarefa(tarefa.texto,tarefa.finalizado)
+        }).done(function(res) {
+            res.forEach((tarefa) => {
+                gerarTarefa(
+                    tarefa.texto,
+                    tarefa.finalizado,
+                    tarefa.id
+                )
             })
             console.log(res);
         });
