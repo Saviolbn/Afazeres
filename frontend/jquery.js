@@ -1,4 +1,4 @@
-function gerarLi(texto,sublinhado,id){
+function gerarLi(texto, sublinhado, id){
 
     const linha = document.createElement("li");
     linha.className = "listItem"
@@ -37,8 +37,8 @@ function criarTarefa(tarefa) {
         type: "POST",
         url: "http://localhost:3000/criar",
         contentType: "application/json",
-        dataType:"JSON",
-        data:JSON.stringify({
+        dataType: "JSON",
+        data: JSON.stringify({
             "texto": tarefa.val(),
             "finalizado": false
         }),
@@ -47,15 +47,15 @@ function criarTarefa(tarefa) {
                 retorno.texto,
                 retorno.finalizado,
                 retorno.id
-            )
+            ).done(()=>{
+                tarefa.val("");
+            })
         }
-    }).done(()=>{
-        tarefa.val("");
     })
 }
 
-function gerarTarefa(tarefa,sublinhado,id){
-    gerarLi(tarefa,sublinhado,id)
+function gerarTarefa(tarefa, sublinhado, id) {
+    gerarLi(tarefa, sublinhado, id)
 }
 
 $(function () {
@@ -72,10 +72,10 @@ $(function () {
             type:"DELETE",
             url: `http://localhost:3000/deletar/${idTarefa}`,
             dataType: "JSON"
-        })
-        $(this).parent().fadeOut(function () {
+        }).done($(this).parent().fadeOut(function () {
             $(this).remove();
-        });
+            event.stopPropagation();
+        }))
         event.stopPropagation();
     });
 
@@ -150,8 +150,8 @@ $(function () {
             type: "GET",
             dataType:"JSON",
             data:JSON.stringify({})
-        }).done(function(res){
-            res.forEach((tarefa) =>{
+        }).done(function(res) {
+            res.forEach((tarefa) => {
                 gerarTarefa(
                     tarefa.texto,
                     tarefa.finalizado,
