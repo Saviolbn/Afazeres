@@ -57,5 +57,24 @@ app.delete("/deletar/:id", async(req, res) =>{
     res.send(dados)
 })
 
+app.post("/cadastrar", async(req,res) => {
+    try {
+        const cadastro = await prisma.usuario.create({
+            data:{
+                nome: req.body.nome,
+                senha: req.body.senha
+            }
+        })
+        res.send(cadastro)
+    } catch (error) {
+        if (error.code === "P2002") {
+            console.log("erro 409, usuario ja cadastrado")
+            res.status(409)
+            res.send("usuario ja cadastrado")
+        }
+    }
+
+})
+
 app.listen(port, () => {
 })
