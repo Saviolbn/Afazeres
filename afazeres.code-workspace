@@ -17,6 +17,9 @@
 		"cSpell.words": [
 			"Unico"
 		],
-		"liveServer.settings.multiRootWorkspaceName": "frontend"
+		"liveServer.settings.multiRootWorkspaceName": "frontend",
+		"cSpell.ignoreWords": [
+			"usuario"
+		]
 	}
 }
