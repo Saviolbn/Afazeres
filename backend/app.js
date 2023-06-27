@@ -90,6 +90,7 @@ app.post("/login", async(req,res) => {
             }
         })
         res.status(200)
+        res.cookie("usuario",usuario)
         res.send(usuario)
     } catch (error) {
         console.error(error)
