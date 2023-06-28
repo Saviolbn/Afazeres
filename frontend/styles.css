@@ -171,6 +171,8 @@ li:hover .material-icons {
 .navLi{
     display: inline;
     box-sizing: border-box;
+    color: black;
+    font-size: 30px;
     padding: 0 10px; 
 }
 .navLi:nth-child(2){
