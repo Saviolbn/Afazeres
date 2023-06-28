@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
@@ -15,9 +14,8 @@
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
         </script>
     <script src="jquery.js"></script>
-    <title>Lista de Afazeres</title>
+    <title>Login</title>
 </head>
-
 <body>
     <nav class="navbar">
         <ul class="navUl">
@@ -33,16 +31,11 @@
         </ul>
     </nav>
     <main class="container">
-        <h1 class="listaTitulo">
-            <span>Tarefas</span> 
-            <span class="material-icons add">add</span>
-        </h1>
-        <form class="listaFormulario" onsubmit="return false">
-            <input class="listaInput" type="text" id="novaTarefa" placeholder="Nova Tarefa..." />
+        <form class="formLogin" action="">
+            <input class="inputLogin" type="text" placeholder="Usuario">
+            <input class="inputLogin" type="text" placeholder="Senha">
+            <button class="entrarLogin" type="submit">Entrar</button>
         </form>
-        <ul class="lista"></ul>
     </main>
-    <!-- <button type="button" class="ajaxTeste"> ajax</button> -->
 </body>
-
 </html>
