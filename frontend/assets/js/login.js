@@ -1,20 +1,23 @@
 //faz o login
 
-$(function(){
+$(function () {
 
-    $(".formLogin").on("submit", function(event){
+    $(".formLogin").on("submit", function (event) {
         const usuario = $("#usuarioLogin").val();
         const senha = $("#senhaLogin").val();
-    
+        if (!(/^[A-Za-z0-9]*$/.test(usuario))) {
+            alert("Usuario invalido")
+            return;
+        }
         $.ajax({
             url: "http://localhost:3000/login/",
-            type:"POST",
+            type: "POST",
             dataType: "JSON",
             contentType: "application/json",
-            xhrFields:{
+            xhrFields: {
                 withCredentials: true
             },
-            data :JSON.stringify({
+            data: JSON.stringify({
                 "nome": usuario,
                 "senha": senha
             })
