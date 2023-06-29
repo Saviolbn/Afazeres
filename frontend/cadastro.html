@@ -32,13 +32,17 @@
             </li>
         </ul>
     </nav>
-    <main class="container">
         <form class="formCadastro" onsubmit="return false" action="">
-            <input class="inputLogin" id="usuarioLogin" type="text" placeholder="Usuario">
-            <input class="inputLogin" id="senhaLogin" type="text" placeholder="Senha">
-            <input class="inputLogin" id="senhaLoginConfimar" type="text" placeholder="Repetir Senha">
+            <label class="labelLogin" for="usuarioLogin">Usuario</label>
+            <input class="inputLogin" id="usuarioLogin" type="text" placeholder="Digite seu usuario...">
+            
+            <label class="labelLogin" for="senhaLogin">Senha</label>
+            <input class="inputLogin" id="senhaLogin" type="text" placeholder="Digite sua senha...">
+            
+            <label class="labelLogin" for="senhaLoginConfimar">Confirmar senha</label>
+            <input class="inputLogin" id="senhaLoginConfimar" type="text" placeholder="Repita sua senha...">
+            
             <button class="entrarLogin" type="submit">Entrar</button>
         </form>
-    </main>
 </body>
 </html>

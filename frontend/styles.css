@@ -136,10 +136,19 @@ li:hover .material-icons {
 /* pagina de cadastro */
 
 .formCadastro{
-    margin: auto;
-    width: 70%;
-    max-width: 1200px;
-    margin: 72px auto;
+    padding: 32px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #ff968a;
+    width: 80%;
+    max-width: 400px;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 20px;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.2);
 }
 
 /* pagina de login */
@@ -183,6 +192,11 @@ li:hover .material-icons {
     width: 40%;
     border-radius: 8px;
     border: 1px solid black;
+}
+
+.entrarLogin:hover{
+    cursor: pointer;
+    background-color: bisque;
 }
 
 /* navbar */
