@@ -133,6 +133,15 @@ li:hover .material-icons {
     align-items: center;
 }
 
+/* pagina de cadastro */
+
+.formCadastro{
+    margin: auto;
+    width: 70%;
+    max-width: 1200px;
+    margin: 72px auto;
+}
+
 /* pagina de login */
 
 .formLogin{

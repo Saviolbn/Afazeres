@@ -27,14 +27,18 @@ app.post("/criar", async (req, res) => {
 })
 
 app.get("/listar", async(req, res) => {
-    console.log(req.headers)
-    const usuario = JSON.parse(req.cookies.usuario)
-    const dados = await prisma.tarefas.findMany({
-        where:{
-            usuarioId: usuario.id
-        }
-    })
-    res.send(dados)
+    if (req.cookies.usuario) {
+        const usuario = JSON.parse(req.cookies.usuario)
+        const dados = await prisma.tarefas.findMany({
+            where:{
+                usuarioId: usuario.id
+            }
+        })
+        res.send(dados)
+    } else {
+        res.send("Erro Inesperado")
+    }
+    
 }) 
 
 app.get("/listarUnico/:id", async(req, res) => {
@@ -83,6 +87,7 @@ app.post("/cadastrar", async(req,res) => {
             }
         })
         res.status(200)
+        res.cookie("usuario",JSON.stringify(cadastro))
         res.send(cadastro)
     } catch (error) {
         console.log(error)
