@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="styles.css">
@@ -11,13 +12,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
-    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
-    </script>
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js">
     </script>
     <script src="jquery.js"></script>
     <title>Login</title>
 </head>
+
 <body>
     <nav class="navbar">
         <ul class="navUl">
@@ -32,12 +34,13 @@
             </li>
         </ul>
     </nav>
-    <main class="container">
-        <form class="formLogin" onsubmit="return false" action="">
-            <input class="inputLogin" id="usuarioLogin" type="text" placeholder="Usuario">
-            <input class="inputLogin" id="senhaLogin" type="text" placeholder="Senha">
-            <button class="entrarLogin" type="submit">Entrar</button>
-        </form>
-    </main>
+    <form class="formLogin" onsubmit="return false" action="">
+        <label class = "labelLogin" for="usuarioLogin">Usuario</label>
+        <input class="inputLogin" id="usuarioLogin" type="text" placeholder="Usuario">
+        <label class = "labelLogin" for="senhaLogin">Senha</label>
+        <input class="inputLogin" id="senhaLogin" type="text" placeholder="Senha">
+        <button class="entrarLogin" type="submit">Entrar</button>
+    </form>
 </body>
+
 </html>
