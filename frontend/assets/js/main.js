@@ -1,5 +1,3 @@
-
-
 $(function () {
 
     //pegar cookie
