@@ -16,8 +16,18 @@ app.use(cors({
 }))
 const port = 3000;
 
+app.use((req,res,next)=>{
+    console.log({
+        route:`${req.method} ${req.path}`,
+        headers: req.headers,
+        pathParams: req.params,
+        query: req.query,
+        body: req.body
+    });
+    next();
+})
 
-app.post("/criar", async (req, res) => {
+app.post("/criar", async (req, res,next) => {
     try {
         const usuario = JSON.parse(req.cookies.usuario)
         const dados = await prisma.tarefas.create({
@@ -34,7 +44,7 @@ app.post("/criar", async (req, res) => {
 
 })
 
-app.get("/listar", async (req, res) => {
+app.get("/listar", async (req, res,next) => {
     try {
         const usuario = JSON.parse(req.cookies.usuario)
         const dados = await prisma.tarefas.findMany({
@@ -48,7 +58,7 @@ app.get("/listar", async (req, res) => {
     }
 })
 
-app.get("/listarUnico/:id", async (req, res) => {
+app.get("/listarUnico/:id", async (req, res,next) => {
     try {
         const usuario = JSON.parse(req.cookies.usuario)
         const dados = await prisma.tarefas.findFirst({
@@ -63,7 +73,7 @@ app.get("/listarUnico/:id", async (req, res) => {
     }
 })
 
-app.put("/editar/:id", async (req, res) => {
+app.put("/editar/:id", async (req, res,next) => {
     try {
         const usuario = JSON.parse(req.cookies.usuario)
         const dados = await prisma.tarefas.updateMany({
@@ -98,7 +108,7 @@ app.delete("/deletar/:id", async (req, res, next) => {
 
 })
 
-app.post("/cadastrar", async (req, res) => {
+app.post("/cadastrar", async (req, res,next) => {
     try {
         const hash = await bcrypt.hash(req.body.senha, 10)
         const cadastro = await prisma.usuario.create({
