@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/cadastro.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
@@ -13,16 +12,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.7.0.js"
-        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
+    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js">
     </script>
+    <script src="assets/js/cadastro.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/index.js"></script>
-    
-    <title>Lista de Afazeres</title>
+    <title>Login</title>
 </head>
-
 <body>
     <nav class="navbar">
         <ul class="navUl">
@@ -37,16 +34,17 @@
             </li>
         </ul>
     </nav>
-    <main class="container">
-        <h1 class="listaTitulo">
-            <span>Tarefas</span> 
-            <span class="material-icons add">add</span>
-        </h1>
-        <form class="listaFormulario" onsubmit="return false">
-            <input class="listaInput" type="text" id="novaTarefa" placeholder="Nova Tarefa..." />
+        <form class="formCadastro" onsubmit="return false" action="">
+            <label class="labelLogin" for="usuarioLogin">Usuario</label>
+            <input class="inputLogin" id="usuarioLogin" type="text" placeholder="Digite seu usuario...">
+            
+            <label class="labelLogin" for="senhaLogin">Senha</label>
+            <input class="inputLogin" id="senhaLogin" type="text" placeholder="Digite sua senha...">
+            
+            <label class="labelLogin" for="senhaLoginConfimar">Confirmar senha</label>
+            <input class="inputLogin" id="senhaLoginConfimar" type="text" placeholder="Repita sua senha...">
+            
+            <button class="entrarLogin" type="submit">Entrar</button>
         </form>
-        <ul class="lista"></ul>
-    </main>
 </body>
-
 </html>

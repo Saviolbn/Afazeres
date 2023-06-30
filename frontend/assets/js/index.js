@@ -1,4 +1,4 @@
-function gerarLi(texto, sublinhado, id){
+function gerarLi(texto, sublinhado, id) {
 
     const linha = document.createElement("li");
     linha.className = "listItem"
@@ -11,8 +11,8 @@ function gerarLi(texto, sublinhado, id){
     const campo = document.createElement("span");
     campo.className = "texto";
     campo.innerText = texto;
-    if(sublinhado){
-        campo.className += " sublinhado" 
+    if (sublinhado) {
+        campo.className += " sublinhado"
     }
 
     const lapis = document.createElement("span");
@@ -42,14 +42,15 @@ function criarTarefa(tarefa) {
             "texto": tarefa.val(),
             "finalizado": false
         }),
-        success: (retorno)=>{
+        xhrFields: {
+            withCredentials: true
+        },
+        success: (retorno) => {
             gerarLi(
                 retorno.texto,
                 retorno.finalizado,
                 retorno.id
-            ).done(()=>{
-                tarefa.val("");
-            })
+            )
         }
     })
 }
@@ -59,6 +60,7 @@ function gerarTarefa(tarefa, sublinhado, id) {
 }
 
 $(function () {
+
     //marcar como concluida a tarefa
     $(".lista").on("click", "li", function (event) {
         $(this).find(".texto").toggleClass("sublinhado");
@@ -69,9 +71,12 @@ $(function () {
     $(".lista").on("click", ".delete", function (event) {
         const idTarefa = $(this).parent().data("id");
         $.ajax({
-            type:"DELETE",
+            type: "DELETE",
             url: `http://localhost:3000/deletar/${idTarefa}`,
-            dataType: "JSON"
+            dataType: "JSON",
+            xhrFields: {
+                withCredentials: true
+            }
         }).done($(this).parent().fadeOut(function () {
             $(this).remove();
             event.stopPropagation();
@@ -101,7 +106,7 @@ $(function () {
     });
 
     //editar tarefa
-    $(".lista").on("focusout",".campEditar",function(event) {
+    $(".lista").on("focusout", ".campEditar", function (event) {
         let formularioEditar = $(".formEditar");
         const idTarefa = $(this).parent().parent().data("id");
         const novoTexto = document.createElement("span");
@@ -110,17 +115,20 @@ $(function () {
         novoTexto.className = "texto"
         novoTexto.innerText = editarValor;
         textoEditado = editarValor;
-        
+
         formularioEditar.replaceWith(novoTexto);
 
         $.ajax({
-            type:"PUT",
+            type: "PUT",
             url: `http://localhost:3000/editar/${idTarefa}`,
             dataType: "JSON",
             contentType: "application/json",
             data: JSON.stringify({
                 "texto": textoEditado,
             }),
+            xhrFields: {
+                withCredentials: true
+            }
         })
 
         event.stopPropagation();
@@ -135,17 +143,17 @@ $(function () {
             formularioEditar.replaceWith(novoTexto);
         } else {
             const textoEditar = $(this).parent().find(".texto");
-            const campoEditar = $("<input>", { 
+            const campoEditar = $("<input>", {
                 val: $(textoEditar).text(),
                 type: "text",
-                class: "campEditar" 
+                class: "campEditar"
             });
-            const formularioEditar = $("<form></form>",{
+            const formularioEditar = $("<form></form>", {
                 onsubmit: "return false",
                 class: "formEditar"
             });
-            
-            
+
+
             formularioEditar.append(campoEditar);
             textoEditar.replaceWith(formularioEditar);
             campoEditar.focus();
@@ -163,21 +171,24 @@ $(function () {
             $(".listaFormulario").fadeToggle(1000);
         }
     });
+    //lista tarefas
+    $.ajax({
+        url: "http://localhost:3000/listar",
+        type: "GET",
+        dataType: "JSON",
+        data: JSON.stringify({}),
+        xhrFields: {
+            withCredentials: true
+        }
+    }).done(function (res) {
+        res.forEach((tarefa) => {
+            gerarTarefa(
+                tarefa.texto,
+                tarefa.finalizado,
+                tarefa.id
+            )
+        })
+    });
 
-        $.ajax({
-            url:"http://localhost:3000/listar",
-            type: "GET",
-            dataType:"JSON",
-            data:JSON.stringify({})
-        }).done(function(res) {
-            res.forEach((tarefa) => {
-                gerarTarefa(
-                    tarefa.texto,
-                    tarefa.finalizado,
-                    tarefa.id
-                )
-            })
-            console.log(res);
-        });
-    
-});
+})
+

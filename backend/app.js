@@ -2,56 +2,77 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
+const cookieParser = require("cookie-parser")
 
 const prisma = new PrismaClient()
 const app = express();
+app.use(cookieParser());
 app.use(bodyParser.json())
-app.use(cors())
+app.use(cors({
+    origin:"http://localhost:5500",
+    credentials: true
+}))
 const port = 3000;
 
 app.post("/criar", async (req, res) => {
+    const usuario = JSON.parse(req.cookies.usuario)
     const dados = await prisma.tarefas.create({
         data: {
             texto: req.body.texto,
-            finalizado: req.body.finalizado
+            finalizado: req.body.finalizado,
+            usuarioId: usuario.id
         }
     })
     res.send(dados)
 })
 
 app.get("/listar", async(req, res) => {
-    const dados = await prisma.tarefas.findMany({
-
-    })
-    res.send(dados)
+    if (req.cookies.usuario) {
+        const usuario = JSON.parse(req.cookies.usuario)
+        const dados = await prisma.tarefas.findMany({
+            where:{
+                usuarioId: usuario.id
+            }
+        })
+        res.send(dados)
+    } else {
+        res.send("Erro Inesperado")
+    }
+    
 }) 
 
 app.get("/listarUnico/:id", async(req, res) => {
-    const dados = await prisma.tarefas.findUnique({
+    const usuario = JSON.parse(req.cookies.usuario)
+    const dados = await prisma.tarefas.findFirst({
         where: {
-            id: parseInt(req.params.id)
+            id: parseInt(req.params.id),
+            usuarioId: usuario.id
         }
     })
     res.send(dados)
 })
 
 app.put("/editar/:id", async(req, res) => {
-    const dados = await prisma.tarefas.update({
+    const usuario = JSON.parse(req.cookies.usuario)
+    const dados = await prisma.tarefas.updateMany({
         data: {
             texto: req.body.texto,
             finalizado: req.body.finalizado
         },        
         where:{
-            id: parseInt(req.params.id)
+            id: parseInt(req.params.id),
+            usuarioId: usuario.id
         }
     })
     res.send(dados)
 })
 
 app.delete("/deletar/:id", async(req, res) =>{
-    const dados = await prisma.tarefas.delete({
+    const usuario = JSON.parse(req.cookies.usuario)
+    const dados = await prisma.tarefas.deleteMany({
         where:{
-            id: +req.params.id
+            id: +req.params.id,
+            usuarioId: usuario.id
         }
     })
     res.send(dados)
@@ -66,6 +87,7 @@ app.post("/cadastrar", async(req,res) => {
             }
         })
         res.status(200)
+        res.cookie("usuario",JSON.stringify(cadastro))
         res.send(cadastro)
     } catch (error) {
         console.log(error)
@@ -90,7 +112,7 @@ app.post("/login", async(req,res) => {
             }
         })
         res.status(200)
-        res.cookie("usuario",usuario)
+        res.cookie("usuario",JSON.stringify(usuario))
         res.send(usuario)
     } catch (error) {
         console.error(error)
@@ -100,6 +122,7 @@ app.post("/login", async(req,res) => {
         }
         
     }
+    
 })
 app.listen(port, () => {
 })

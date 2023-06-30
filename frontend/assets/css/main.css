@@ -1,0 +1,55 @@
+/* body */
+html,
+body {
+    /* min-height: 100%; */
+    font-family: 'Roboto';
+}
+
+body {
+    /*
+    * Created with https://www.css-gradient.com
+    * Gradient link: https://www.css-gradient.com/?c1=ecffba&c2=e6a23f&gt=l&gd=dtl
+    */
+    background: #ffd8ff;
+    background: linear-gradient(135deg, #eca898, #e7cb9f);
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+}
+
+/* navbar */
+.navbar{
+    width: 100%-20px;
+    background: #ff968a;
+    padding: 10px;
+}
+
+.navUl{
+    width: 100%;
+    padding: 0;
+    display: flex;
+}
+
+.navLi{
+    display: inline;
+    box-sizing: border-box;
+    color: black;
+    font-size: 30px;
+    padding: 0 10px; 
+}
+.navLi:nth-child(2){
+    margin-left: auto;
+    text-align: right;
+}
+
+.navItem{
+    text-decoration: none;
+    color: black;
+    font-size: 30px;
+}
+
+.navItem:hover{
+    color:white;
+}
