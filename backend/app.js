@@ -4,6 +4,7 @@ const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
+const createErrors = require("http-errors")
 
 const prisma = new PrismaClient()
 const app = express();
@@ -15,20 +16,36 @@ app.use(cors({
 }))
 const port = 3000;
 
-app.post("/criar", async (req, res) => {
-    const usuario = JSON.parse(req.cookies.usuario)
-    const dados = await prisma.tarefas.create({
-        data: {
-            texto: req.body.texto,
-            finalizado: req.body.finalizado,
-            usuarioId: usuario.id
-        }
-    })
-    res.send(dados)
+app.use((req,res,next)=>{
+    console.log({
+        route:`${req.method} ${req.path}`,
+        headers: req.headers,
+        pathParams: req.params,
+        query: req.query,
+        body: req.body
+    });
+    next();
 })
 
-app.get("/listar", async (req, res) => {
-    if (req.cookies.usuario) {
+app.post("/criar", async (req, res,next) => {
+    try {
+        const usuario = JSON.parse(req.cookies.usuario)
+        const dados = await prisma.tarefas.create({
+            data: {
+                texto: req.body.texto,
+                finalizado: req.body.finalizado,
+                usuarioId: usuario.id
+            }
+        })
+        res.send(dados)
+    } catch (error) {
+        next(error)
+    }
+
+})
+
+app.get("/listar", async (req, res,next) => {
+    try {
         const usuario = JSON.parse(req.cookies.usuario)
         const dados = await prisma.tarefas.findMany({
             where: {
@@ -36,50 +53,62 @@ app.get("/listar", async (req, res) => {
             }
         })
         res.send(dados)
-    } else {
-        res.send("Erro Inesperado")
+    } catch (error) {
+        next(error)
+    }
+})
+
+app.get("/listarUnico/:id", async (req, res,next) => {
+    try {
+        const usuario = JSON.parse(req.cookies.usuario)
+        const dados = await prisma.tarefas.findFirst({
+            where: {
+                id: parseInt(req.params.id),
+                usuarioId: usuario.id
+            }
+        })
+        res.send(dados)
+    } catch (error) {
+        next(error)
+    }
+})
+
+app.put("/editar/:id", async (req, res,next) => {
+    try {
+        const usuario = JSON.parse(req.cookies.usuario)
+        const dados = await prisma.tarefas.updateMany({
+            data: {
+                texto: req.body.texto,
+                finalizado: req.body.finalizado
+            },
+            where: {
+                id: parseInt(req.params.id),
+                usuarioId: usuario.id
+            }
+        })
+        res.send(dados)
+    } catch (error) {
+        next(error)
+    }
+})
+
+app.delete("/deletar/:id", async (req, res, next) => {
+    try {
+        const usuario = JSON.parse(req.cookies.usuario)
+        const dados = await prisma.tarefas.deleteMany({
+            where: {
+                id: +req.params.id,
+                usuarioId: usuario.id
+            }
+        })
+        res.send(dados)
+    } catch (error) {
+        next(error)
     }
 
 })
 
-app.get("/listarUnico/:id", async (req, res) => {
-    const usuario = JSON.parse(req.cookies.usuario)
-    const dados = await prisma.tarefas.findFirst({
-        where: {
-            id: parseInt(req.params.id),
-            usuarioId: usuario.id
-        }
-    })
-    res.send(dados)
-})
-
-app.put("/editar/:id", async (req, res) => {
-    const usuario = JSON.parse(req.cookies.usuario)
-    const dados = await prisma.tarefas.updateMany({
-        data: {
-            texto: req.body.texto,
-            finalizado: req.body.finalizado
-        },
-        where: {
-            id: parseInt(req.params.id),
-            usuarioId: usuario.id
-        }
-    })
-    res.send(dados)
-})
-
-app.delete("/deletar/:id", async (req, res) => {
-    const usuario = JSON.parse(req.cookies.usuario)
-    const dados = await prisma.tarefas.deleteMany({
-        where: {
-            id: +req.params.id,
-            usuarioId: usuario.id
-        }
-    })
-    res.send(dados)
-})
-
-app.post("/cadastrar", async (req, res) => {
+app.post("/cadastrar", async (req, res,next) => {
     try {
         const hash = await bcrypt.hash(req.body.senha, 10)
         const cadastro = await prisma.usuario.create({
@@ -89,23 +118,18 @@ app.post("/cadastrar", async (req, res) => {
             }
         })
         res.status(200)
-        //res.cookie("usuario", JSON.stringify(cadastro))
         res.send(cadastro)
     } catch (error) {
         console.log(error)
         if (error.code === "P2002") {
-            console.log("erro 409, usuario ja cadastrado")
-            res.status(409)
-            res.send("Usuario ja cadastrado")
+            next(new createErrors.Conflict("Usuario ja cadastrado"))
             return
         }
-        res.status(500)
-        res.send("Erro inesperado")
+        next(error)
     }
-
 })
 
-app.post("/login", async (req, res) => {
+app.post("/login", async (req, res, next) => {
     try {
         const usuario = await prisma.usuario.findFirstOrThrow({
             where: {
@@ -113,22 +137,30 @@ app.post("/login", async (req, res) => {
             }
         })
         if (!bcrypt.compare(req.body.nome, usuario.senha)) {
-            res.status(401)
-            res.send("Senha errada")
+            next(new createErrors.Unauthorized("Senha errada"))
             return
         }
         res.status(200)
         res.cookie("usuario", JSON.stringify(usuario))
         res.send(usuario)
     } catch (error) {
-        console.error(error)
         if (error.code === "P2025") {
-            res.status(400)
-            res.send("Usuario não cadastrado")
+            next(new createErrors.BadRequest("Usuario não cadastrado"))
+        } else {
+            next(error)
         }
-
     }
-
 })
+
+app.use((err, req, res, next) => {
+    console.error(err)
+    if (createErrors.isHttpError(err)) {
+        res.status(err.statusCode).send(err.message)
+    } else {
+        res.status(500).send("pane no sistema")
+    }
+})
+
 app.listen(port, () => {
 })
+
