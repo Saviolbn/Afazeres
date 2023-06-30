@@ -2,14 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { PrismaClient } = require("@prisma/client");
 const cors = require("cors");
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
+const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient()
 const app = express();
 app.use(cookieParser());
 app.use(bodyParser.json())
 app.use(cors({
-    origin:"http://localhost:5500",
+    origin: "http://localhost:5500",
     credentials: true
 }))
 const port = 3000;
@@ -26,11 +27,11 @@ app.post("/criar", async (req, res) => {
     res.send(dados)
 })
 
-app.get("/listar", async(req, res) => {
+app.get("/listar", async (req, res) => {
     if (req.cookies.usuario) {
         const usuario = JSON.parse(req.cookies.usuario)
         const dados = await prisma.tarefas.findMany({
-            where:{
+            where: {
                 usuarioId: usuario.id
             }
         })
@@ -38,10 +39,10 @@ app.get("/listar", async(req, res) => {
     } else {
         res.send("Erro Inesperado")
     }
-    
-}) 
 
-app.get("/listarUnico/:id", async(req, res) => {
+})
+
+app.get("/listarUnico/:id", async (req, res) => {
     const usuario = JSON.parse(req.cookies.usuario)
     const dados = await prisma.tarefas.findFirst({
         where: {
@@ -52,14 +53,14 @@ app.get("/listarUnico/:id", async(req, res) => {
     res.send(dados)
 })
 
-app.put("/editar/:id", async(req, res) => {
+app.put("/editar/:id", async (req, res) => {
     const usuario = JSON.parse(req.cookies.usuario)
     const dados = await prisma.tarefas.updateMany({
         data: {
             texto: req.body.texto,
             finalizado: req.body.finalizado
-        },        
-        where:{
+        },
+        where: {
             id: parseInt(req.params.id),
             usuarioId: usuario.id
         }
@@ -67,10 +68,10 @@ app.put("/editar/:id", async(req, res) => {
     res.send(dados)
 })
 
-app.delete("/deletar/:id", async(req, res) =>{
+app.delete("/deletar/:id", async (req, res) => {
     const usuario = JSON.parse(req.cookies.usuario)
     const dados = await prisma.tarefas.deleteMany({
-        where:{
+        where: {
             id: +req.params.id,
             usuarioId: usuario.id
         }
@@ -78,16 +79,17 @@ app.delete("/deletar/:id", async(req, res) =>{
     res.send(dados)
 })
 
-app.post("/cadastrar", async(req,res) => {
+app.post("/cadastrar", async (req, res) => {
     try {
+        const hash = await bcrypt.hash(req.body.senha, 10)
         const cadastro = await prisma.usuario.create({
-            data:{
+            data: {
                 nome: req.body.nome,
-                senha: req.body.senha
+                senha: hash
             }
         })
         res.status(200)
-        res.cookie("usuario",JSON.stringify(cadastro))
+        //res.cookie("usuario", JSON.stringify(cadastro))
         res.send(cadastro)
     } catch (error) {
         console.log(error)
@@ -103,16 +105,20 @@ app.post("/cadastrar", async(req,res) => {
 
 })
 
-app.post("/login", async(req,res) => {
+app.post("/login", async (req, res) => {
     try {
         const usuario = await prisma.usuario.findFirstOrThrow({
-            where:{
-                nome: req.body.nome,
-                senha: req.body.senha
+            where: {
+                nome: req.body.nome
             }
         })
+        if (!bcrypt.compare(req.body.nome, usuario.senha)) {
+            res.status(401)
+            res.send("Senha errada")
+            return
+        }
         res.status(200)
-        res.cookie("usuario",JSON.stringify(usuario))
+        res.cookie("usuario", JSON.stringify(usuario))
         res.send(usuario)
     } catch (error) {
         console.error(error)
@@ -120,9 +126,9 @@ app.post("/login", async(req,res) => {
             res.status(400)
             res.send("Usuario não cadastrado")
         }
-        
+
     }
-    
+
 })
 app.listen(port, () => {
 })

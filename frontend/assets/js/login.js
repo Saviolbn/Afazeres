@@ -21,7 +21,8 @@ $(function () {
                 "nome": usuario,
                 "senha": senha
             })
-        }).success(window.location.href = "index.html")
+        })
+        //.success(window.location.href = "index.html")
         event.stopPropagation();
     })
 
