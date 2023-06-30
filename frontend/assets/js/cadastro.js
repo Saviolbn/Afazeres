@@ -6,13 +6,17 @@ $(function () {
         const usuario = $("#usuarioLogin").val()
         const senha = $("#senhaLogin").val()
         const senhaConfirmar = $("#senhaLoginConfirmar").val()
+        console.log(/^[A-Za-z0-9]*$/.test(usuario))
+        console.log(senha === senhaConfirmar)
+        console.log(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/.test(senha))
         if (
             !(
-                /^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[^a-zA-Z0-9])(?!.*\s).{6,30}$/.test(senha) &&
+                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/.test(senha) &&
                 senha === senhaConfirmar &&
                 /^[A-Za-z0-9]*$/.test(usuario)
             )
         ) {
+            
             alert("Usuario e/ou senha invalidos")
             return;
         }
